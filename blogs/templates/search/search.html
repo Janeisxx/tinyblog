@@ -1,0 +1,61 @@
+{% extends 'blogs/base.html' %}
+{% load highlight %}
+
+
+{% block content  %}
+    {% if query %}
+{#    {% for post in post_list %}#}
+{% for result in page.object_list %}
+                <article class="post post-1">
+                    <header class="entry-header">
+                        <h1 class="entry-title">
+{#                            <a href="{% url 'blogs:detail' post.id  %}">{{ post.title }}</a>#}
+                            <a href="{{ result.object.get_absolute_url }}">{% highlight result.object.title with query %}</a>
+
+                        </h1>
+                        <div class="entry-meta">
+
+                            <span class="post-category"><a href="{% url 'blogs:cate' result.object.category_id %}">{{ result.object.category }}</a></span>
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="2012-11-09T23:15:57+00:00">{{ result.object.created_time.year }}年{{ resulb.object.created_time.month }}月{{ result.object.created_time.day }}日</time></a></span>
+                            <span class="post-author"><a href="{{ result.object.author }}">{{ result.object.author }}</a></span>
+                            <span class="comments-link"><a href="#">4 评论</a></span>
+                            <span class="views-count"><a href="{{ result.object.views }}">{{ result.object.views }} 阅读</a></span>
+                        </div>
+                    </header>
+                    <div class="entry-content clearfix">
+                        <p>{% highlight result.object.content with query %}...</p>
+                        <div class="read-more cl-effect-14">
+                            <a href="{{ post.get_absolute_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                        </div>
+                    </div>
+                </article>
+    {% endfor %}
+  {% endif %}
+                <!-- 简单分页效果
+                <div class="pagination-simple">
+                    <a href="#">上一页</a>
+                    <span class="current">第 6 页 / 共 11 页</span>
+                    <a href="#">下一页</a>
+                </div>
+                -->
+      {% if err_msg %}
+        <h1>{{ err_msg   }}!</h1>
+          {% else %}
+
+                <div class="pagination">
+                    <ul>
+                        <li><a href="">1</a></li>
+                        <li><a href="">...</a></li>
+                        <li><a href="">4</a></li>
+                        <li><a href="">5</a></li>
+                        <li class="current"><a href="">6</a></li>
+                        <li><a href="">7</a></li>
+                        <li><a href="">8</a></li>
+                        <li><a href="">...</a></li>
+                        <li><a href="">11</a></li>
+                    </ul>
+                </div>
+    {% endif %}
+
+                {% endblock %}

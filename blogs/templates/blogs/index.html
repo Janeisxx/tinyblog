@@ -1,0 +1,68 @@
+{% extends 'blogs/base.html' %}
+
+
+{% block content  %}
+
+    {% for post in post_list %}
+                <article class="post post-1">
+                    <header class="entry-header">
+                        <h1 class="entry-title">
+{#                            <a href="{% url 'blogs:detail' post.id  %}">{{ post.title }}</a>#}
+                            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+
+                        </h1>
+                        <div class="entry-meta">
+
+                            <span class="post-category"><a href="{% url 'blogs:cate' post.category_id %}">{{ post.category }}</a></span>
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="2012-11-09T23:15:57+00:00">{{ post.created_time.year }}年{{ post.created_time.month }}月{{ post.created_time.day }}日</time></a></span>
+                            <span class="post-author"><a href="{{ post.author }}">{{ post.author }}</a></span>
+                            <span class="comments-link"><a href="#">4 评论</a></span>
+                            <span class="views-count"><a href="{{ post.views }}">{{ post.views }} 阅读</a></span>
+                        </div>
+                    </header>
+                    <div class="entry-content clearfix">
+                        <p>{{ post.excerpt }}...</p>
+                        <div class="read-more cl-effect-14">
+                            <a href="{{ post.get_absolute_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                        </div>
+                    </div>
+                </article>
+    {% endfor %}
+
+                <!-- 简单分页效果
+                <div class="pagination-simple">
+                    <a href="#">上一页</a>
+                    <span class="current">第 6 页 / 共 11 页</span>
+                    <a href="#">下一页</a>
+                </div>
+                -->
+      {% if err_msg %}
+{#          如果有报错,就没必要分页了#}
+        <h1>{{ err_msg   }}!</h1>
+          {% else %}
+                    {% if is_paginated %}
+                <div class="pagination">
+                    <ul>
+                        {% if page_obj.has_previous %}
+                            <li><a href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
+                        {% endif %}
+
+                        {% for i in page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="current"><a href="?page={{ page_obj.number }}">{{ i }}</a></li>
+                             {% else %}
+                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}">下一页</a></li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+                        {% endif %}
+    {% endif %}
+                {% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'blogs/base.html' %}
+{% load highlight %}
+
+{% block content %}
+
+
+    <h1>搜索结果</h1>
+{% if query %}
+    {% for result in page.object_list %}
+        <h1>title{% highlight result.object.title with query %}</h1>
+        <div>
+        content{% highlight result.object.content with query %}
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}
